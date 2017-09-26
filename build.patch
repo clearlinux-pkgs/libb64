@@ -1,0 +1,11 @@
+--- libb64-1.2/Makefile~	2010-06-15 11:51:24.000000000 +0000
++++ libb64-1.2/Makefile	2017-09-26 14:58:37.731265181 +0000
+@@ -23,3 +23,7 @@
+ distclean_base64:
+ 	$(MAKE) -C base64 distclean;
+ 
++install:
++	mkdir -p $(DESTDIR)/usr/lib64
++	cp -a include $(DESTDIR)/usr
++	cp ./src/libb64.a $(DESTDIR)/usr/lib64
+\ No newline at end of file
