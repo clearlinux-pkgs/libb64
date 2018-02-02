@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libb64
 Version  : 1.2
-Release  : 2
+Release  : 3
 URL      : http://download.draios.com/dependencies/libb64-1.2.src.zip
 Source0  : http://download.draios.com/dependencies/libb64-1.2.src.zip
 Summary  : No detailed summary available
