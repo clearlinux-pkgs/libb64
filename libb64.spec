@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : libb64
-Version  : 1.2
-Release  : 5
-URL      : http://download.draios.com/dependencies/libb64-1.2.src.zip
-Source0  : http://download.draios.com/dependencies/libb64-1.2.src.zip
+Version  : 1.2.1
+Release  : 7
+URL      : https://sourceforge.net/projects/libb64/files/libb64/libb64/libb64-1.2.1.zip
+Source0  : https://sourceforge.net/projects/libb64/files/libb64/libb64/libb64-1.2.1.zip
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Public-Domain
@@ -25,28 +25,50 @@ code for standalone encoding and decoding executables.
 %package dev
 Summary: dev components for the libb64 package.
 Group: Development
-Provides: libb64-devel
+Provides: libb64-devel = %{version}-%{release}
+Requires: libb64 = %{version}-%{release}
 
 %description dev
 dev components for the libb64 package.
 
 
+%package staticdev
+Summary: staticdev components for the libb64 package.
+Group: Default
+Requires: libb64-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the libb64 package.
+
+
 %prep
-%setup -q -n libb64-1.2
+%setup -q -n libb64-1.2.1
+cd %{_builddir}/libb64-1.2.1
 %patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1506438066
-make V=1  %{?_smp_mflags}
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1579723542
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+make  %{?_smp_mflags}  all_src
+
 
 %install
-export SOURCE_DATE_EPOCH=1506438066
+export SOURCE_DATE_EPOCH=1579723542
 rm -rf %{buildroot}
 %make_install
+## install_append content
+install -m 0644 -D src/libb64.a %{buildroot}/usr/lib64/libb64.a
+install -m 0755 -d %{buildroot}/usr/include/
+cp -r include/b64 %{buildroot}/usr/include/
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -57,4 +79,7 @@ rm -rf %{buildroot}
 /usr/include/b64/cencode.h
 /usr/include/b64/decode.h
 /usr/include/b64/encode.h
-/usr/lib64/*.a
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/libb64.a

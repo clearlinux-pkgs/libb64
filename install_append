@@ -1,0 +1,3 @@
+install -m 0644 -D src/libb64.a %{buildroot}/usr/lib64/libb64.a
+install -m 0755 -d %{buildroot}/usr/include/
+cp -r include/b64 %{buildroot}/usr/include/
